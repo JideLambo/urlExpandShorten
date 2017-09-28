@@ -32,10 +32,35 @@ function expandUrl(){
     xhr.send();
 }
 
+function shortenUrl(){
+    const urlWithKey = url + '?key=' + apiKey;
+    const urlToShorten = $inputField.val();
+    const data = JSON.stringify({
+        longUrl: urlToShorten
+    });
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState === XMLHttpRequest.DONE){
+            $responseField.append('<p>your shortened url is: </p><p>' + xhr.response.id + '</p>');
+        }
+    }
+    xhr.open('POST', urlWithKey);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(data);
+}
+
 function expand(){
     $responseField.empty();
     expandUrl();
     return false;
 }
 
+function shorten(){
+    $responseField.empty();
+    shortenUrl();
+    return false;
+}
+
 $expandButton.click(expand);
+$shortenButton.click(shorten);
