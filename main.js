@@ -18,18 +18,17 @@ const $responseField = $('#responseField');
 function expandUrl(){
     const urlToExpand = url + '?shortUrl=' + $inputField.val() + '&key=' + apiKey;
     
-    const xhr = new XMLHttpRequest();
-    
-    xhr.responseType = 'json';
-    
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            $responseField.append('<p>Your expanded url is: </p><p>' + xhr.response.longUrl + '</p>');
+    $.ajax({
+        url: urlToExpand,
+        type: 'GET',
+        dataType: 'json',
+        success(response){
+          $responseField.append('<p>Your expanded url is: </p><p>' + response.longUrl + '</p>');  
+        },
+        error(jqXHR, status, errorThrown){
+            console.log(jqXHR);
         }
-    }
-    
-    xhr.open('GET', urlToExpand);
-    xhr.send();
+    });
 }
 
 function shortenUrl(){
